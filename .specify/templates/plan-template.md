@@ -31,7 +31,11 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] 레이어 분리: UI/CLI 처리와 비즈니스 로직이 분리되어 있는가?
+- [ ] 테스트 우선: 구현 이전에 실패 테스트를 작성/확인하는 계획이 포함되었는가?
+- [ ] 최소 의존성: 신규 외부 패키지의 필요성과 대안 검토가 기록되었는가?
+- [ ] 단순함 우선: 불필요한 추상화 없이 최소 설계를 선택했는가?
+- [ ] CLI 범위 준수: REST API, GUI, Web Interface가 범위에서 제외되었는가?
 
 ## Project Structure
 
@@ -50,45 +54,20 @@ specs/[###-feature]/
 ### Source Code (repository root)
 <!--
   ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
-  for this feature. Delete unused options and expand the chosen structure with
-  real paths (e.g., apps/admin, packages/something). The delivered plan must
-  not include Option labels.
+  for this feature. This project is CLI-only and MUST keep a single-project
+  layout with clear layer separation.
 -->
 
 ```text
-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
 src/
-├── models/
-├── services/
 ├── cli/
-└── lib/
+├── application/
+├── domain/
+└── infrastructure/
 
 tests/
-├── contract/
-├── integration/
-└── unit/
-
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
-backend/
-├── src/
-│   ├── models/
-│   ├── services/
-│   └── api/
-└── tests/
-
-frontend/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
-└── tests/
-
-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
-api/
-└── [same as backend above]
-
-ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
+├── unit/
+└── integration/
 ```
 
 **Structure Decision**: [Document the selected structure and reference the real

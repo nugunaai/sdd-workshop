@@ -5,6 +5,19 @@
 **Status**: Draft  
 **Input**: User description: "$ARGUMENTS"
 
+## Constitution Alignment *(mandatory)*
+
+- **CA-001 (레이어 분리)**: 비즈니스 규칙이 UI/CLI 처리와 분리됨을 설명한다.
+- **CA-002 (테스트 우선)**: 각 user story별 선행 테스트 전략을 명시한다.
+- **CA-003 (최소 의존성)**: 신규 외부 의존성 필요 여부와 대안 검토 결과를 기록한다.
+- **CA-004 (단순함 우선)**: 선택 설계가 최소 복잡도임을 근거와 함께 명시한다.
+- **CA-005 (CLI 범위)**: REST API, GUI, Web Interface가 범위 밖임을 확인한다.
+
+## Scope Boundaries *(mandatory)*
+
+- In Scope: 터미널 CLI 기반 ToDo 관리 기능
+- Out of Scope: REST API 서버, GUI 앱, Web Interface
+
 ## User Scenarios & Testing *(mandatory)*
 
 <!--
