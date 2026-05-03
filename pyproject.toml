@@ -1,0 +1,33 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "cli-todo-app"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "typer",
+    "sqlalchemy",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+]
+
+[project.scripts]
+todo = "cli.main:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["todo_lib", "cli"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["todo_lib", "cli"]
+
+[tool.coverage.report]
+show_missing = true
