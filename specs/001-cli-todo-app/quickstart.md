@@ -15,17 +15,22 @@ uv venv
 
 ## 2) 의존성 설치
 ```bash
-uv pip install typer sqlalchemy pytest pytest-cov
+uv pip install -e ".[dev]"
 ```
 
 ## 3) CLI 실행
 ```bash
+# 진입점: pyproject.toml에 정의된 'todo' 스크립트 사용
+todo --help
+todo add "문서 정리" --due 2026-05-10 --priority high
+todo list
+todo list --filter pending
+todo list --priority high
+todo done 1
+todo delete 1
+
+# 또는 모듈 직접 실행
 python -m cli.main --help
-python -m cli.main add "문서 정리" --due 2026-05-10 --priority high
-python -m cli.main list
-python -m cli.main list --filter pending
-python -m cli.main done 1
-python -m cli.main delete 1
 ```
 
 ## 4) 테스트 우선 개발 루프
@@ -35,8 +40,18 @@ python -m cli.main delete 1
 
 ## 5) 테스트 실행
 ```bash
-pytest
-pytest --cov=todo_lib --cov=cli --cov-report=term-missing
+# 기본 테스트 실행 (73개 테스트, ~20초)
+.venv/Scripts/python.exe -m pytest tests/ -v
+
+# 커버리지 포함 실행
+.venv/Scripts/python.exe -m pytest tests/ --cov --cov-report=term-missing
+
+# 특정 모듈만 실행
+.venv/Scripts/python.exe -m pytest tests/unit/ -v
+.venv/Scripts/python.exe -m pytest tests/integration/ -v
+
+# 성능 테스트만 실행 (1,000개 항목 기준)
+.venv/Scripts/python.exe -m pytest tests/integration/test_cli_performance.py -v
 ```
 
 ## 6) 기본 동작 확인 체크리스트
