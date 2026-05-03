@@ -8,7 +8,7 @@ from cli.main import app
 from todo_lib.db import get_engine, get_session_factory, init_db
 from todo_lib.service import add_todo
 
-runner = CliRunner(mix_stderr=True)
+runner = CliRunner()
 
 
 @pytest.fixture

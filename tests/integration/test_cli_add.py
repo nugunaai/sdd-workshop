@@ -7,7 +7,7 @@ from typer.testing import CliRunner
 from cli.main import app
 
 # mix_stderr=True: stdout과 stderr를 result.output으로 함께 캡처한다
-runner = CliRunner(mix_stderr=True)
+runner = CliRunner()
 
 
 @pytest.fixture(autouse=True)

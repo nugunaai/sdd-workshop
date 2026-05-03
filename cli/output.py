@@ -10,8 +10,8 @@ def print_add_success(item: ToDoItem) -> None:
 
 
 def print_past_due_warning() -> None:
-    """마감일이 과거 날짜임을 경고한다 (stderr)."""
-    typer.echo("마감일이 과거 날짜입니다", err=True)
+    """마감일이 과거 날짜임을 경고한다."""
+    typer.echo("마감일이 과거 날짜입니다")
 
 
 def print_list_items(items: list[ToDoItem]) -> None:
@@ -45,5 +45,5 @@ def print_delete_success(todo_id: int) -> None:
 
 
 def print_error(message: str) -> None:
-    """오류 메시지를 stderr로 출력한다."""
-    typer.echo(message, err=True)
+    """오류 메시지를 출력한다."""
+    typer.echo(message)
