@@ -15,7 +15,7 @@ uv venv
 
 ## 2) 의존성 설치
 ```bash
-uv pip install -e ".[dev]"
+uv sync
 ```
 
 ## 3) CLI 실행
@@ -41,17 +41,17 @@ python -m cli.main --help
 ## 5) 테스트 실행
 ```bash
 # 기본 테스트 실행 (73개 테스트, ~20초)
-.venv/Scripts/python.exe -m pytest tests/ -v
+uv run pytest tests/ -v
 
 # 커버리지 포함 실행
-.venv/Scripts/python.exe -m pytest tests/ --cov --cov-report=term-missing
+uv run pytest tests/ --cov --cov-report=term-missing
 
 # 특정 모듈만 실행
-.venv/Scripts/python.exe -m pytest tests/unit/ -v
-.venv/Scripts/python.exe -m pytest tests/integration/ -v
+uv run pytest tests/unit/ -v
+uv run pytest tests/integration/ -v
 
 # 성능 테스트만 실행 (1,000개 항목 기준)
-.venv/Scripts/python.exe -m pytest tests/integration/test_cli_performance.py -v
+uv run pytest tests/integration/test_cli_performance.py -v
 ```
 
 ## 6) 기본 동작 확인 체크리스트

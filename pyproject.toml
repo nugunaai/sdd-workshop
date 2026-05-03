@@ -11,7 +11,7 @@ dependencies = [
     "sqlalchemy",
 ]
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
     "pytest",
     "pytest-cov",
