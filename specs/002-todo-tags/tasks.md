@@ -26,6 +26,8 @@
 - [ ] T004 [P] 태그 검증/정규화/중복 검사 유틸을 추가 in todo_lib/validators.py
 - [ ] T005 create_todo/get_all_todos 시그니처에 tags/tag 인자를 추가 in todo_lib/repository.py
 - [ ] T006 legacy row에서 tags 누락 시 빈 리스트로 처리하는 공통 호환 로직을 추가 in todo_lib/repository.py
+- [ ] T027 기존 todo.db 스키마에 tags 컬럼을 추가하는 idempotent 마이그레이션 절차를 구현 in todo_lib/db.py
+- [ ] T028 [P] 기존 DB(컬럼 없는 상태)에서 앱 시작 시 마이그레이션이 재실행 안전하게 적용되고 legacy row tags가 빈 리스트로 정규화되는 통합 테스트를 추가 in tests/integration/test_cli_persistence.py
 
 **Checkpoint**: 태그 데이터 저장/조회의 공통 기반이 준비되어 user story 구현 가능
 
@@ -63,6 +65,7 @@
 
 - [ ] T013 [P] [US2] 태그 필터 service(unit) 테스트를 추가 in tests/unit/test_service_list.py
 - [ ] T014 [P] [US2] `todo list --tag` 및 복합 필터(integration) 테스트를 추가 in tests/integration/test_cli_list.py
+- [ ] T031 [P] [US2] 태그 비교는 case-insensitive지만 출력은 최초 입력 원형을 유지하는 통합 테스트를 추가 in tests/integration/test_cli_list.py
 
 ### Implementation for User Story 2
 
@@ -103,6 +106,8 @@
 - [ ] T024 [P] 전체 테스트 및 커버리지 명령을 실행하고 결과를 확인 in specs/002-todo-tags/quickstart.md
 - [ ] T025 [P] 태그 기능 사용 예시와 검증 체크리스트를 최신 구현에 맞게 정리 in specs/002-todo-tags/quickstart.md
 - [ ] T026 contracts와 plan 간 불일치 여부를 점검/정리 in specs/002-todo-tags/contracts/cli-contract.md
+- [ ] T029 [P] 태그 포함 목록 조회 성능 시나리오를 추가 in tests/integration/test_cli_performance.py
+- [ ] T030 [P] 1,000개 항목에서 태그 포함 add/list 응답 시간 검증을 추가 in tests/integration/test_cli_performance.py
 
 ---
 
@@ -130,11 +135,11 @@
 
 ### Parallel Opportunities
 
-- Phase 2의 T003, T004는 병렬 가능
+- Phase 2의 T003, T004, T028은 병렬 가능
 - US1 테스트 T007, T008 병렬 가능
-- US2 테스트 T013, T014 병렬 가능
+- US2 테스트 T013, T014, T031 병렬 가능
 - US3 테스트 T019, T020 병렬 가능
-- Polish의 T024, T025, T026은 상호 파일 충돌이 없도록 분배 시 병렬 가능
+- Polish의 T024, T025, T026, T029, T030은 상호 파일 충돌이 없도록 분배 시 병렬 가능
 
 ---
 
