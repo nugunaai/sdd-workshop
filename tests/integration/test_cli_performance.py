@@ -94,3 +94,47 @@ def test_sc005_delete_with_1000_items_within_1s(db_with_1000_items):
 
     assert result.exit_code == 0
     assert elapsed < 1.0, f"delete 명령이 {elapsed:.2f}초 소요됨 (한도: 1초)"
+
+
+# --- T029-T030: 태그 포함 성능 테스트 ---
+
+@pytest.fixture
+def db_with_1000_tagged_items(monkeypatch, tmp_path):
+    """태그가 섞인 1,000개 항목이 저장된 임시 DB를 준비한다.
+    절반은 work 태그, 절반은 home 태그를 가진다."""
+    db_file = str(tmp_path / "perf_tagged.db")
+    monkeypatch.setattr("cli.main.DB_PATH", db_file)
+
+    engine = get_engine(db_file)
+    init_db(engine)
+    Session = get_session_factory(engine)
+    session = Session()
+    for i in range(1000):
+        tag = "work" if i % 2 == 0 else "home"
+        add_todo(session, title=f"태그항목 {i + 1}", tags=[tag])
+    session.close()
+    engine.dispose()
+
+    return db_file
+
+
+def test_sc005_list_with_tag_filter_1000_items_within_1s(db_with_1000_tagged_items):
+    """T029: 1,000개 항목에서 --tag 필터 조회가 1초 이내에 응답한다."""
+    start = time.perf_counter()
+    result = runner.invoke(app, ["list", "--tag", "work"])
+    elapsed = time.perf_counter() - start
+
+    assert result.exit_code == 0
+    assert elapsed < 1.0, f"list --tag 명령이 {elapsed:.2f}초 소요됨 (한도: 1초)"
+
+
+def test_sc005_add_with_tags_1000_items_within_1s(db_with_1000_tagged_items):
+    """T030: 1,000개 항목 상태에서 태그 포함 add가 1초 이내에 응답한다."""
+    start = time.perf_counter()
+    result = runner.invoke(
+        app, ["add", "1001번 태그 항목", "--tag", "work", "--tag", "urgent"]
+    )
+    elapsed = time.perf_counter() - start
+
+    assert result.exit_code == 0
+    assert elapsed < 1.0, f"add --tag 명령이 {elapsed:.2f}초 소요됨 (한도: 1초)"

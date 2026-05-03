@@ -40,12 +40,13 @@ def add(
     priority: Optional[str] = typer.Option(
         None, "--priority", help="우선순위 (high|medium|low)"
     ),
+    tag: list[str] = typer.Option([], "--tag", help="태그 (반복 사용 가능, 최대 5개)"),
 ) -> None:
     """새 ToDo 항목을 추가한다."""
     session = _get_session()
     try:
         item, past_warning = service.add_todo(
-            session, title=title, due_date_str=due, priority=priority
+            session, title=title, due_date_str=due, priority=priority, tags=tag
         )
         if past_warning:
             output.print_past_due_warning()
@@ -70,6 +71,7 @@ def list_todos(
     priority: Optional[str] = typer.Option(
         None, "--priority", help="우선순위 (high|medium|low)"
     ),
+    tag: Optional[str] = typer.Option(None, "--tag", help="태그로 필터링"),
 ) -> None:
     """ToDo 항목 목록을 조회한다."""
     session = _get_session()
@@ -83,7 +85,9 @@ def list_todos(
             output.print_error("필터는 done 또는 pending이어야 합니다")
             raise typer.Exit(code=1)
 
-        items = service.list_todos(session, filter_done=filter_done, priority=priority)
+        items = service.list_todos(
+            session, filter_done=filter_done, priority=priority, tag=tag
+        )
         output.print_list_items(items)
     except ValidationError as e:
         output.print_error(str(e))

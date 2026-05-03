@@ -9,8 +9,8 @@
 
 **Purpose**: 구현 시작 전 공통 기준과 회귀 베이스라인 확정
 
-- [ ] T001 기존 전체 테스트를 실행해 baseline 통과를 확인하고 결과를 specs/002-todo-tags/checklists/requirements.md에 기록
-- [ ] T002 태그 기능 구현 범위/파일 매핑을 specs/002-todo-tags/plan.md 기준으로 점검하고 작업 순서를 specs/002-todo-tags/tasks.md에 확정
+- [X] T001 기존 전체 테스트를 실행해 baseline 통과를 확인하고 결과를 specs/002-todo-tags/checklists/requirements.md에 기록
+- [X] T002 태그 기능 구현 범위/파일 매핑을 specs/002-todo-tags/plan.md 기준으로 점검하고 작업 순서를 specs/002-todo-tags/tasks.md에 확정
 
 **Checkpoint**: 기존 테스트 전체 통과가 첫 번째 확인 기준으로 충족되어야 다음 단계 진행
 
@@ -22,12 +22,12 @@
 
 **⚠️ CRITICAL**: 이 단계 완료 전에는 어떤 user story도 구현하지 않는다.
 
-- [ ] T003 [P] ToDoItem에 JSON tags 필드와 기본값 규칙을 추가 in todo_lib/models.py
-- [ ] T004 [P] 태그 검증/정규화/중복 검사 유틸을 추가 in todo_lib/validators.py
-- [ ] T005 create_todo/get_all_todos 시그니처에 tags/tag 인자를 추가 in todo_lib/repository.py
-- [ ] T006 legacy row에서 tags 누락 시 빈 리스트로 처리하는 공통 호환 로직을 추가 in todo_lib/repository.py
-- [ ] T027 기존 todo.db 스키마에 tags 컬럼을 추가하는 idempotent 마이그레이션 절차를 구현 in todo_lib/db.py
-- [ ] T028 [P] 기존 DB(컬럼 없는 상태)에서 앱 시작 시 마이그레이션이 재실행 안전하게 적용되고 legacy row tags가 빈 리스트로 정규화되는 통합 테스트를 추가 in tests/integration/test_cli_persistence.py
+- [X] T003 [P] ToDoItem에 JSON tags 필드와 기본값 규칙을 추가 in todo_lib/models.py
+- [X] T004 [P] 태그 검증/정규화/중복 검사 유틸을 추가 in todo_lib/validators.py
+- [X] T005 create_todo/get_all_todos 시그니처에 tags/tag 인자를 추가 in todo_lib/repository.py
+- [X] T006 legacy row에서 tags 누락 시 빈 리스트로 처리하는 공통 호환 로직을 추가 in todo_lib/repository.py
+- [X] T027 기존 todo.db 스키마에 tags 컬럼을 추가하는 idempotent 마이그레이션 절차를 구현 in todo_lib/db.py
+- [X] T028 [P] 기존 DB(컬럼 없는 상태)에서 앱 시작 시 마이그레이션이 재실행 안전하게 적용되고 legacy row tags가 빈 리스트로 정규화되는 통합 테스트를 추가 in tests/integration/test_cli_persistence.py
 
 **Checkpoint**: 태그 데이터 저장/조회의 공통 기반이 준비되어 user story 구현 가능
 
@@ -41,15 +41,15 @@
 
 ### Tests for User Story 1 (MANDATORY) ⚠️
 
-- [ ] T007 [P] [US1] 태그 입력 검증(unit) 테스트를 추가 in tests/unit/test_service_add.py
-- [ ] T008 [P] [US1] `todo add --tag` 성공/실패(integration) 테스트를 추가 in tests/integration/test_cli_add.py
+- [X] T007 [P] [US1] 태그 입력 검증(unit) 테스트를 추가 in tests/unit/test_service_add.py
+- [X] T008 [P] [US1] `todo add --tag` 성공/실패(integration) 테스트를 추가 in tests/integration/test_cli_add.py
 
 ### Implementation for User Story 1
 
-- [ ] T009 [US1] add_todo에 tags 인자 및 검증/정규화 로직을 구현 in todo_lib/service.py
-- [ ] T010 [US1] create_todo 경로에 tags 저장을 구현 in todo_lib/repository.py
-- [ ] T011 [US1] add 명령에 반복 `--tag` 옵션을 연결 in cli/main.py
-- [ ] T012 [US1] add 관련 오류 메시지 매핑을 계약에 맞게 조정 in cli/main.py
+- [X] T009 [US1] add_todo에 tags 인자 및 검증/정규화 로직을 구현 in todo_lib/service.py
+- [X] T010 [US1] create_todo 경로에 tags 저장을 구현 in todo_lib/repository.py
+- [X] T011 [US1] add 명령에 반복 `--tag` 옵션을 연결 in cli/main.py
+- [X] T012 [US1] add 관련 오류 메시지 매핑을 계약에 맞게 조정 in cli/main.py
 
 **Checkpoint**: 태그 생성 기능이 독립적으로 동작하고 관련 테스트가 통과
 
@@ -63,16 +63,16 @@
 
 ### Tests for User Story 2 (MANDATORY) ⚠️
 
-- [ ] T013 [P] [US2] 태그 필터 service(unit) 테스트를 추가 in tests/unit/test_service_list.py
-- [ ] T014 [P] [US2] `todo list --tag` 및 복합 필터(integration) 테스트를 추가 in tests/integration/test_cli_list.py
-- [ ] T031 [P] [US2] 태그 비교는 case-insensitive지만 출력은 최초 입력 원형을 유지하는 통합 테스트를 추가 in tests/integration/test_cli_list.py
+- [X] T013 [P] [US2] 태그 필터 service(unit) 테스트를 추가 in tests/unit/test_service_list.py
+- [X] T014 [P] [US2] `todo list --tag` 및 복합 필터(integration) 테스트를 추가 in tests/integration/test_cli_list.py
+- [X] T031 [P] [US2] 태그 비교는 case-insensitive지만 출력은 최초 입력 원형을 유지하는 통합 테스트를 추가 in tests/integration/test_cli_list.py
 
 ### Implementation for User Story 2
 
-- [ ] T015 [US2] list_todos에 tag 필터 인자를 추가하고 필터 조합 로직을 구현 in todo_lib/service.py
-- [ ] T016 [US2] get_all_todos에 tag 조건 조회를 구현 in todo_lib/repository.py
-- [ ] T017 [US2] list 명령에 `--tag` 옵션을 추가하고 service 인자를 연결 in cli/main.py
-- [ ] T018 [US2] 목록 출력에 tags 필드를 포함하도록 포맷을 확장 in cli/output.py
+- [X] T015 [US2] list_todos에 tag 필터 인자를 추가하고 필터 조합 로직을 구현 in todo_lib/service.py
+- [X] T016 [US2] get_all_todos에 tag 조건 조회를 구현 in todo_lib/repository.py
+- [X] T017 [US2] list 명령에 `--tag` 옵션을 추가하고 service 인자를 연결 in cli/main.py
+- [X] T018 [US2] 목록 출력에 tags 필드를 포함하도록 포맷을 확장 in cli/output.py
 
 **Checkpoint**: 태그 필터 조회 기능이 독립적으로 동작하고 관련 테스트가 통과
 
@@ -86,14 +86,14 @@
 
 ### Tests for User Story 3 (MANDATORY) ⚠️
 
-- [ ] T019 [P] [US3] 기존 동작 회귀 매트릭스 테스트를 보강 in tests/integration/test_cli_validation_matrix.py
-- [ ] T020 [P] [US3] 태그 포함/미포함 persistence 회귀 테스트를 보강 in tests/integration/test_cli_persistence.py
+- [X] T019 [P] [US3] 기존 동작 회귀 매트릭스 테스트를 보강 in tests/integration/test_cli_validation_matrix.py
+- [X] T020 [P] [US3] 태그 포함/미포함 persistence 회귀 테스트를 보강 in tests/integration/test_cli_persistence.py
 
 ### Implementation for User Story 3
 
-- [ ] T021 [US3] done/delete 흐름이 tags 필드와 독립적으로 유지되도록 서비스 로직을 점검/보완 in todo_lib/service.py
-- [ ] T022 [US3] 기존 출력 계약과 태그 출력 확장을 함께 만족하도록 출력 로직을 보정 in cli/output.py
-- [ ] T023 [US3] 회귀 시나리오 기준으로 오류 코드/메시지 호환성을 보정 in cli/main.py
+- [X] T021 [US3] done/delete 흐름이 tags 필드와 독립적으로 유지되도록 서비스 로직을 점검/보완 in todo_lib/service.py
+- [X] T022 [US3] 기존 출력 계약과 태그 출력 확장을 함께 만족하도록 출력 로직을 보정 in cli/output.py
+- [X] T023 [US3] 회귀 시나리오 기준으로 오류 코드/메시지 호환성을 보정 in cli/main.py
 
 **Checkpoint**: 기존 핵심 기능 회귀 없이 태그 기능과 함께 동작
 
@@ -103,11 +103,11 @@
 
 **Purpose**: 전 스토리 공통 마무리
 
-- [ ] T024 [P] 전체 테스트 및 커버리지 명령을 실행하고 결과를 확인 in specs/002-todo-tags/quickstart.md
-- [ ] T025 [P] 태그 기능 사용 예시와 검증 체크리스트를 최신 구현에 맞게 정리 in specs/002-todo-tags/quickstart.md
-- [ ] T026 contracts와 plan 간 불일치 여부를 점검/정리 in specs/002-todo-tags/contracts/cli-contract.md
-- [ ] T029 [P] 태그 포함 목록 조회 성능 시나리오를 추가 in tests/integration/test_cli_performance.py
-- [ ] T030 [P] 1,000개 항목에서 태그 포함 add/list 응답 시간 검증을 추가 in tests/integration/test_cli_performance.py
+- [X] T024 [P] 전체 테스트 및 커버리지 명령을 실행하고 결과를 확인 in specs/002-todo-tags/quickstart.md
+- [X] T025 [P] 태그 기능 사용 예시와 검증 체크리스트를 최신 구현에 맞게 정리 in specs/002-todo-tags/quickstart.md
+- [X] T026 contracts와 plan 간 불일치 여부를 점검/정리 in specs/002-todo-tags/contracts/cli-contract.md
+- [X] T029 [P] 태그 포함 목록 조회 성능 시나리오를 추가 in tests/integration/test_cli_performance.py
+- [X] T030 [P] 1,000개 항목에서 태그 포함 add/list 응답 시간 검증을 추가 in tests/integration/test_cli_performance.py
 
 ---
 
