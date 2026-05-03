@@ -104,3 +104,78 @@ def test_add_strips_title_whitespace(db_session):
 
     item, _ = add_todo(db_session, title="  앞뒤 공백  ")
     assert item.title == "앞뒤 공백"
+
+
+# --- T007: 태그 입력 검증 단위 테스트 ---
+
+def test_add_with_tags_saves_correctly(db_session):
+    """태그를 포함해 추가하면 태그가 올바르게 저장된다."""
+    from todo_lib.service import add_todo
+
+    item, _ = add_todo(db_session, title="태그 항목", tags=["work", "urgent"])
+    assert item.tags == ["work", "urgent"]
+
+
+def test_add_no_tags_defaults_to_empty_list(db_session):
+    """태그를 지정하지 않으면 빈 리스트로 저장된다."""
+    from todo_lib.service import add_todo
+
+    item, _ = add_todo(db_session, title="태그 없음")
+    assert item.tags == []
+
+
+def test_add_too_many_tags_raises(db_session):
+    """태그가 6개 이상이면 ValidationError를 발생시킨다."""
+    from todo_lib.service import add_todo
+
+    with pytest.raises(ValidationError):
+        add_todo(db_session, title="많은 태그", tags=["a", "b", "c", "d", "e", "f"])
+
+
+def test_add_tag_too_long_raises(db_session):
+    """21자 이상의 태그는 ValidationError를 발생시킨다."""
+    from todo_lib.service import add_todo
+
+    with pytest.raises(ValidationError):
+        add_todo(db_session, title="긴 태그", tags=["a" * 21])
+
+
+def test_add_tag_invalid_chars_raises(db_session):
+    """허용 문자 외의 문자(공백, 특수문자 등)를 포함한 태그는 ValidationError."""
+    from todo_lib.service import add_todo
+
+    with pytest.raises(ValidationError):
+        add_todo(db_session, title="잘못된 태그", tags=["invalid tag"])
+
+
+def test_add_duplicate_tags_raises(db_session):
+    """대소문자 무관 중복 태그는 ValidationError를 발생시킨다."""
+    from todo_lib.service import add_todo
+
+    with pytest.raises(ValidationError):
+        add_todo(db_session, title="중복 태그", tags=["Work", "work"])
+
+
+def test_add_tag_preserves_original_case(db_session):
+    """태그의 원본 대소문자를 유지한다."""
+    from todo_lib.service import add_todo
+
+    item, _ = add_todo(db_session, title="케이스 유지", tags=["Work", "Release"])
+    assert item.tags == ["Work", "Release"]
+
+
+def test_add_max_tags_allowed(db_session):
+    """정확히 5개의 태그는 허용된다."""
+    from todo_lib.service import add_todo
+
+    item, _ = add_todo(db_session, title="5개 태그", tags=["a", "b", "c", "d", "e"])
+    assert len(item.tags) == 5
+
+
+def test_add_tag_with_hyphen_and_underscore(db_session):
+    """하이픈과 언더스코어를 포함한 태그는 허용된다."""
+    from todo_lib.service import add_todo
+
+    item, _ = add_todo(db_session, title="특수문자 태그", tags=["my-tag", "my_tag"])
+    assert "my-tag" in item.tags
+    assert "my_tag" in item.tags

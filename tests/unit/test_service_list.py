@@ -76,3 +76,64 @@ def test_list_sorted_by_id(db_session):
 
     items = list_todos(db_session)
     assert [i.title for i in items] == ["A", "B", "C"]
+
+
+# --- T013: 태그 필터 service 단위 테스트 ---
+
+def test_list_filter_by_tag_returns_matching_items(db_session):
+    """태그 필터는 해당 태그를 포함한 항목만 반환한다."""
+    from todo_lib.service import add_todo, list_todos
+
+    add_todo(db_session, title="work 항목", tags=["work"])
+    add_todo(db_session, title="home 항목", tags=["home"])
+    add_todo(db_session, title="태그 없음")
+
+    items = list_todos(db_session, tag="work")
+    assert len(items) == 1
+    assert items[0].title == "work 항목"
+
+
+def test_list_filter_by_tag_case_insensitive(db_session):
+    """태그 필터는 대소문자를 무시하고 비교한다."""
+    from todo_lib.service import add_todo, list_todos
+
+    add_todo(db_session, title="Work 항목", tags=["Work"])
+
+    items_lower = list_todos(db_session, tag="work")
+    assert len(items_lower) == 1
+
+    items_upper = list_todos(db_session, tag="WORK")
+    assert len(items_upper) == 1
+
+
+def test_list_filter_by_tag_no_match_returns_empty(db_session):
+    """매칭 태그가 없으면 빈 리스트를 반환한다."""
+    from todo_lib.service import add_todo, list_todos
+
+    add_todo(db_session, title="other 항목", tags=["other"])
+
+    items = list_todos(db_session, tag="nonexistent")
+    assert items == []
+
+
+def test_list_filter_by_tag_with_multiple_tags(db_session):
+    """여러 태그를 가진 항목도 태그 필터에 올바르게 반응한다."""
+    from todo_lib.service import add_todo, list_todos
+
+    add_todo(db_session, title="멀티태그 항목", tags=["work", "urgent"])
+    add_todo(db_session, title="단일태그 항목", tags=["home"])
+
+    items = list_todos(db_session, tag="urgent")
+    assert len(items) == 1
+    assert items[0].title == "멀티태그 항목"
+
+
+def test_list_no_tag_filter_returns_all(db_session):
+    """tag 필터 없이 호출하면 태그 유무와 관계없이 모든 항목을 반환한다."""
+    from todo_lib.service import add_todo, list_todos
+
+    add_todo(db_session, title="태그 있음", tags=["work"])
+    add_todo(db_session, title="태그 없음")
+
+    items = list_todos(db_session)
+    assert len(items) == 2

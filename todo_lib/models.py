@@ -1,7 +1,7 @@
 """todo_lib/models.py: ToDoItem SQLAlchemy ORM 모델."""
 from datetime import date, datetime
 
-from sqlalchemy import Boolean, Date, DateTime, Integer, String
+from sqlalchemy import JSON, Boolean, Date, DateTime, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from todo_lib.db import Base
@@ -18,3 +18,5 @@ class ToDoItem(Base):
     is_done: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False)
     completed_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    # 태그 목록. 최대 5개, 각 20자 이하, [A-Za-z0-9_-] 문자만 허용
+    tags: Mapped[list] = mapped_column(JSON, nullable=False, default=list)

@@ -86,3 +86,74 @@ def test_list_invalid_filter_fails():
     """잘못된 --filter 값은 exit code 1과 오류 메시지를 반환한다."""
     result = runner.invoke(app, ["list", "--filter", "invalid"])
     assert result.exit_code == 1
+
+
+# --- T014: --tag 필터 통합 테스트 ---
+
+def test_list_tag_filter_returns_matching_items():
+    """--tag 필터는 해당 태그를 포함한 항목만 반환한다."""
+    runner.invoke(app, ["add", "work 항목", "--tag", "work"])
+    runner.invoke(app, ["add", "home 항목", "--tag", "home"])
+
+    result = runner.invoke(app, ["list", "--tag", "work"])
+    assert result.exit_code == 0
+    assert "work 항목" in result.output
+    assert "home 항목" not in result.output
+
+
+def test_list_tag_filter_no_match_shows_empty_message():
+    """--tag 필터에 매칭 항목이 없으면 빈 목록 메시지를 출력한다."""
+    runner.invoke(app, ["add", "other 항목", "--tag", "other"])
+
+    result = runner.invoke(app, ["list", "--tag", "nonexistent"])
+    assert result.exit_code == 0
+    assert "등록된 항목이 없습니다" in result.output
+
+
+def test_list_tag_filter_combined_with_priority():
+    """--tag와 --priority 복합 필터는 두 조건 모두 만족하는 항목만 반환한다."""
+    runner.invoke(app, ["add", "work+high", "--tag", "work", "--priority", "high"])
+    runner.invoke(app, ["add", "work+low", "--tag", "work", "--priority", "low"])
+    runner.invoke(app, ["add", "home+high", "--tag", "home", "--priority", "high"])
+
+    result = runner.invoke(app, ["list", "--tag", "work", "--priority", "high"])
+    assert result.exit_code == 0
+    assert "work+high" in result.output
+    assert "work+low" not in result.output
+    assert "home+high" not in result.output
+
+
+def test_list_without_tag_filter_shows_all():
+    """--tag 없이 호출하면 태그 유무와 관계없이 모든 항목을 반환한다."""
+    runner.invoke(app, ["add", "태그 있음", "--tag", "work"])
+    runner.invoke(app, ["add", "태그 없음"])
+
+    result = runner.invoke(app, ["list"])
+    assert result.exit_code == 0
+    assert "태그 있음" in result.output
+    assert "태그 없음" in result.output
+
+
+# --- T031: case-insensitive 비교, original case 출력 테스트 ---
+
+def test_list_tag_filter_is_case_insensitive():
+    """태그 필터는 대소문자 무관하게 매칭한다."""
+    runner.invoke(app, ["add", "Work 항목", "--tag", "Work"])
+
+    result_lower = runner.invoke(app, ["list", "--tag", "work"])
+    assert result_lower.exit_code == 0
+    assert "Work 항목" in result_lower.output
+
+    result_upper = runner.invoke(app, ["list", "--tag", "WORK"])
+    assert result_upper.exit_code == 0
+    assert "Work 항목" in result_upper.output
+
+
+def test_list_tag_output_preserves_original_case():
+    """목록 출력에서 태그는 최초 입력 시의 원본 대소문자를 유지한다."""
+    runner.invoke(app, ["add", "케이스 항목", "--tag", "MyTag"])
+
+    result = runner.invoke(app, ["list"])
+    assert result.exit_code == 0
+    # 원본 대소문자(MyTag)가 출력에 포함되어야 한다
+    assert "MyTag" in result.output

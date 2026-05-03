@@ -23,9 +23,11 @@ def print_list_items(items: list[ToDoItem]) -> None:
         done_label = "완료" if item.is_done else "미완료"
         due_label = item.due_date.strftime("%Y-%m-%d") if item.due_date else "-"
         priority_label = item.priority or "-"
+        tags = item.tags if item.tags else []
+        tags_label = ", ".join(tags) if tags else "-"
         typer.echo(
             f"[{item.id}] {item.title} | 마감일: {due_label} | "
-            f"우선순위: {priority_label} | {done_label}"
+            f"우선순위: {priority_label} | 태그: {tags_label} | {done_label}"
         )
 
 

@@ -26,6 +26,19 @@ def get_session_factory(engine) -> sessionmaker:
 
 
 def init_db(engine) -> None:
-    """모델을 임포트해 Base에 등록한 뒤 테이블을 생성한다."""
+    """모델을 임포트해 Base에 등록한 뒤 테이블을 생성하고 스키마 마이그레이션을 적용한다."""
     import todo_lib.models  # noqa: F401 - Base에 모델 등록을 위한 사이드이펙트 임포트
     Base.metadata.create_all(engine)
+    _migrate_add_tags_column(engine)
+
+
+def _migrate_add_tags_column(engine) -> None:
+    """기존 todo_items 테이블에 tags 컬럼이 없으면 추가한다. 재실행 안전(idempotent)."""
+    from sqlalchemy import inspect, text
+
+    with engine.connect() as conn:
+        inspector = inspect(engine)
+        columns = [col["name"] for col in inspector.get_columns("todo_items")]
+        if "tags" not in columns:
+            conn.execute(text("ALTER TABLE todo_items ADD COLUMN tags JSON DEFAULT '[]'"))
+            conn.commit()
