@@ -63,6 +63,7 @@
 
 - [ ] T014 [P] [US1] Add unit tests for add validation and ID assignment in tests/unit/test_service_add.py
 - [ ] T015 [P] [US1] Add integration tests for add command success and input errors in tests/integration/test_cli_add.py
+- [ ] T039 [US1] Add persistence restart integration test (process restart 후 list 재조회) in tests/integration/test_cli_persistence.py
 
 ### Implementation for User Story 1
 
@@ -106,6 +107,7 @@
 
 - [ ] T025 [P] [US3] Add unit tests for done state transition rules in tests/unit/test_service_done.py
 - [ ] T026 [P] [US3] Add integration tests for done command responses in tests/integration/test_cli_done.py
+- [ ] T040 [US3] Add integration test for non-numeric ID input on `todo done` in tests/integration/test_cli_done.py
 
 ### Implementation for User Story 3
 
@@ -127,6 +129,7 @@
 
 - [ ] T030 [P] [US4] Add unit tests for delete behavior in tests/unit/test_service_delete.py
 - [ ] T031 [P] [US4] Add integration tests for delete command responses in tests/integration/test_cli_delete.py
+- [ ] T041 [US4] Add integration test for non-numeric ID input on `todo delete` in tests/integration/test_cli_delete.py
 
 ### Implementation for User Story 4
 
@@ -146,6 +149,9 @@
 - [ ] T036 Implement SQLite open/read failure to exit-code mapping in cli/main.py and todo_lib/errors.py
 - [ ] T037 [P] Update quickstart verification steps in specs/001-cli-todo-app/quickstart.md
 - [ ] T038 Run full test and coverage command documentation update in specs/001-cli-todo-app/quickstart.md
+- [ ] T042 Add measurable command-time benchmark test for SC-001 (<=30s) in tests/integration/test_cli_performance.py
+- [ ] T043 Add 1,000-item responsiveness test for SC-005 in tests/integration/test_cli_performance.py
+- [ ] T044 Add invalid-input matrix test for SC-003 (error message + no data corruption) in tests/integration/test_cli_validation_matrix.py
 
 ---
 
@@ -177,6 +183,7 @@
 - T003, T004, T006 can run in parallel during Setup
 - T008, T009, T012 can run in parallel during Foundational
 - Each story의 테스트 2개는 [P]로 병렬 작성 가능
+- T042, T043, T044는 기능 구현 완료 후 병렬로 수행 가능
 - Story 간 병렬 개발은 가능하지만, 현재 계획은 커밋 단위 안정성을 위해 우선순위 순차 진행을 권장
 
 ---
@@ -247,4 +254,4 @@ Task: T031 [US4] integration tests in tests/integration/test_cli_delete.py
 - [P] tasks는 서로 다른 파일을 변경하도록 분해했다.
 - [Story] 라벨은 User Story phase에만 부여했다.
 - 모든 user story는 독립 테스트 기준을 포함한다.
-- spec의 JSON 저장 표현과 plan의 SQLite 결정이 상충하므로, 본 tasks는 plan/research 기준(SQLite)으로 정렬했다.
+- spec, plan, tasks는 SQLite + SQLAlchemy 결정으로 정렬했다.
